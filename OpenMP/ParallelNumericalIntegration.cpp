@@ -11,6 +11,9 @@
 =====================================OpenMP:使用梯形法则并行计算定积分======================================================
 来源：https://kamilmysliwiec.com/parallel-numerical-integration-with-openmp
 */
+/*
+梯形法则：https://images.app.goo.gl/V78ZTtpys5d76gydA
+*/
 using namespace std;
 
 struct Result
@@ -81,7 +84,7 @@ const Result rectangleMethod(const double x1, const double x2, const double dx, 
 	return { omp_get_wtime() - now, s };
 }
 
-const Result trapezoidalMethod(const double x1, const double x2, const double dx, const int nThreads)
+const Result trapezoidalMethod(const double x1, const double x2, const double dx, const int nThreads)  //x1(a), x2(b), dx( (b-a)/N )
 {
 	const int N = static_cast<int>((x2 - x1) / dx);
 	double now = omp_get_wtime();
@@ -90,12 +93,12 @@ const Result trapezoidalMethod(const double x1, const double x2, const double dx
 	#pragma omp parallel for num_threads(nThreads) reduction(+: s)
 	for (int i = 1; i < N; i++) s += f(x1 + i * dx);
 
-	s = (s + (f(x1) + f(x2)) / 2) * dx;
+	s = (s + (f(x1) + f(x2)) / 2) * dx; //完全按照梯形公式计算
 	 
 	return { omp_get_wtime() - now, s };
 }
 
-double f(const double x)
+double f(const double x) //f(x) = sin(x), F(x) = -cos(x)
 {
 	return sin(x);
 }
