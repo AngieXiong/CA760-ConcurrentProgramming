@@ -57,7 +57,7 @@ void integrate (Slice ∗buffer , QSemaphore &buff_used, QSemaphore &buff_avail,
     double en = buffer[tmp_out].end;
     double div = buffer[tmp_out].divisions;
     
-    buff_used.release();//释放由信号量保护的n种资源
+    buff_used.release();//释放由信号量保护的资源，说明缓冲区内的数据被消费掉了，生产者可以往缓冲区接着塞数据
     
     if (div == 0)
     {
@@ -94,7 +94,7 @@ int main (int argc , char ∗∗argv)
   int in=0; 
   int out=0;
   QSemaphore buff_avail; //这个信号量控制没有存入待处理数据的缓冲区
-  QSemaphore buff_used(BUFF_SIZE); //这个信号两控制已经存入待处理数据，并且消费者线程还没读取的缓冲区区域
+  QSemaphore buff_used(BUFF_SIZE); //这个信号量控制已经存入待处理数据，并且消费者线程还没读取的缓冲区区域
   //这两个信号量共同确保了生产者线程在消费者线程之前不会生产出超过BUFF_SIZE的数据量，并且确保消费者线程永远不会读取生产者尚未生成的数据
   
   QMutex mutex;
