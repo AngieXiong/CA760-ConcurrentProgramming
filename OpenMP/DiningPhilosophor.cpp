@@ -5,6 +5,8 @@
 /*
 ============================================哲学家就餐问题============================================
 来源：https://www.geeksforgeeks.org/dining-philosopher-problem-using-semaphores/
+
+关于信号量：https://blog.csdn.net/SpeedMe/article/details/17597373
 */
 #define N 5 
 #define THINKING 2 
